@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  /*function Person() {
+    this.name = "张三";
+    this.age = 20;
+    this.run = function () {
+      alert(this.name + "在跑步");
+    };
+  }
+  Person.prototype.study = function () {
+    alert(this.name + "在学习");
+  };
+  function Web() {
+    Person.call(this);
+  }
+  const p = new Person();
+  p.run();
+  p.study();
+
+  //方法一：对象冒充继承，不能继承原型链中的方法
+  const w = new Web();
+  w.run(); //cal可以继承构造函数中的方法，
+  //   w.study(); //错误！但是不能继承原型链中的方法
+
+  //方法二：原型链继承
+  function Web1() {}
+  // 写法1，让web1的实例的原型=Person的实例,这种写法表示Web1的单个实例继承了Person
+  w1.__proto__ = new Person();
+  w1.study();
+  // 写法2，让web1的原型对象=Person的实例,这种写法表示Web1整个继承了Person
+  Web1.prototype = new Person();
+  const w2 = new Web1();
+  w2.study();
+  */
+
+  //原型链继承不能给父类传参-----------------------------------
+  /* function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    this.run = function () {
+      alert(this.name + "在跑步");
+    };
+  }
+  Person.prototype.study = function () {
+    alert(this.name + "在学习");
+  };
+  const p = new Person("张三", 18);
+  p.run();
+  p.study();
+
+  function Web(name, age) {}
+
+  Web.prototype = new Person();
+  const w = new Web("李四", 20);
+
+  w.study();//undefined在学习，如果不采用call则没有办法给父类传参。
+*/
+  //对象冒充和原型链继承组合继承，可以实现给父类传参--------------------
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    this.run = function () {
+      alert(this.name + "在跑步");
+    };
+  }
+  Person.prototype.study = function () {
+    alert(this.name + "在学习");
+  };
+  const p = new Person("张三", 18);
+  p.run();
+  p.study();
+
+  function Web(name, age) {
+    Person.call(this, name, age);
+  }
+
+  //   Web.prototype = new Person();
+  // 因为call已经继承了Person构造函数，所以Web.prototype=Person.prototype,继承原型对象的方法就好了
+  // 避免了再一次新建对象
+  Web.prototype = Person.prototype;
+  const w = new Web("李四", 20);
+
+  w.study();
+  w.run();
+</script>
